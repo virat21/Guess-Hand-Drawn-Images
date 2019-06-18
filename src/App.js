@@ -1,33 +1,26 @@
 import React from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
-import {
-  Container,
-  Button
-} from "react-bootstrap";
-import CanvasDraw from "react-canvas-draw";
-import { convertImageToArray } from "./utils/convertImageToArray";
+import { Container } from "react-bootstrap";
+import DrawBox from "./components/DrawBox/DrawBox";
+import DrawingTypeAdder from "./components/DrawingTypeAdder/DrawingTypeAdder";
+import AllModels from "./components/AllModels/AllModels";
+import { trainNeuralNetwork } from "./utils/ml";
+import { preloadModels } from "./utils/preloadModels";
+preloadModels();
+trainNeuralNetwork().then(res => {
+  console.log(res, "done");
+});
+
 function App() {
-  let d = null;
   return (
     <div className="App">
       <Header />
       <Container>
-        <CanvasDraw
-          ref={e => (d = e)}
-          brushColor="#000"
-        />
-        <Button
-          onClick={() => {
-            convertImageToArray(
-              d.canvas.drawing
-            ).then(data => {
-              console.log(data);
-            });
-          }}
-        >
-          Convert To Array
-        </Button>
+        <DrawBox />
+        <DrawingTypeAdder />
+        <hr />
+        <AllModels />
       </Container>
     </div>
   );
